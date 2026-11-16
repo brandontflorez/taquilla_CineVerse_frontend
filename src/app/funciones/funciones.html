@@ -1,0 +1,346 @@
+
+<div class="contenedor-funciones">
+
+  <!-- ENCABEZADO -->
+  <section class="tarjeta-funciones encabezado-funciones">
+    <div>
+      <h2>🎥 Funciones disponibles</h2>
+      <p>Programa y administra las funciones de CineVerse.</p>
+    </div>
+
+    <div class="contador-funciones">
+      <span>{{ funciones.length }}</span>
+      <small>Funciones registradas</small>
+    </div>
+  </section>
+
+  <!-- AGREGAR FUNCIÓN -->
+  <section class="tarjeta-funciones">
+
+    <div class="titulo-seccion">
+      <h3>🎞️ Agregar función</h3>
+      <p>Registra una nueva función para las películas disponibles.</p>
+    </div>
+
+    <form (ngSubmit)="crearFuncion()">
+
+      <div class="formulario-grid">
+
+        <div class="campo-funcion">
+          <label>Película</label>
+          <select
+            name="peliculaId"
+            [(ngModel)]="nuevaFuncion.peliculaId"
+            required
+          >
+            <option [ngValue]="0">Seleccione una película</option>
+
+            @for (pelicula of peliculas; track pelicula.id) {
+            <option [ngValue]="pelicula.id">
+              {{ pelicula.titulo }}
+            </option>
+            }
+          </select>
+        </div>
+
+        <div class="campo-funcion">
+          <label>Fecha</label>
+          <input
+            type="date"
+            name="fecha"
+            [(ngModel)]="nuevaFuncion.fecha"
+            required
+          >
+        </div>
+
+        <div class="campo-funcion">
+          <label>Hora de la función</label>
+          <input
+            type="time"
+            name="hora"
+            [(ngModel)]="nuevaFuncion.hora"
+            required
+          >
+        </div>
+
+        <div class="campo-funcion">
+          <label>Sala</label>
+          <input
+            type="text"
+            name="sala"
+            [(ngModel)]="nuevaFuncion.sala"
+            placeholder="Ej. Sala 1"
+            required
+          >
+        </div>
+
+        <div class="campo-funcion">
+          <label>Precio del boleto (COP)</label>
+          <input
+            type="number"
+            name="precio"
+            [(ngModel)]="nuevaFuncion.precio"
+            min="1"
+            placeholder="Ej. 18000"
+            required
+          >
+        </div>
+
+        <div class="campo-funcion">
+          <label>Cupos disponibles</label>
+          <input
+            type="number"
+            name="cuposDisponibles"
+            [(ngModel)]="nuevaFuncion.cuposDisponibles"
+            min="1"
+            placeholder="Cantidad de cupos"
+            required
+          >
+        </div>
+
+      </div>
+
+      <div class="acciones-formulario">
+        <button
+          type="submit"
+          class="boton-agregar-funcion"
+          [disabled]="guardando"
+        >
+          {{ guardando ? 'Guardando...' : 'Agregar función' }}
+        </button>
+      </div>
+
+    </form>
+  </section>
+
+  <!-- EDITAR FUNCIÓN -->
+  @if (funcionEditando) {
+
+  <section class="tarjeta-funciones formulario-edicion-funcion">
+
+    <div class="titulo-seccion">
+      <h3>✏️ Editar función</h3>
+      <p>Modifica los datos de la función seleccionada.</p>
+    </div>
+
+    <form (ngSubmit)="actualizarFuncion()">
+
+      <div class="formulario-grid">
+
+        <div class="campo-funcion">
+          <label>Película</label>
+          <select
+            name="editarPeliculaId"
+            [(ngModel)]="funcionEditando.peliculaId"
+            required
+          >
+            @for (pelicula of peliculas; track pelicula.id) {
+            <option [ngValue]="pelicula.id">
+              {{ pelicula.titulo }}
+            </option>
+            }
+          </select>
+        </div>
+
+        <div class="campo-funcion">
+          <label>Fecha</label>
+          <input
+            type="date"
+            name="editarFecha"
+            [(ngModel)]="funcionEditando.fecha"
+            required
+          >
+        </div>
+
+        <div class="campo-funcion">
+          <label>Hora de la función</label>
+          <input
+            type="time"
+            name="editarHora"
+            [(ngModel)]="funcionEditando.hora"
+            required
+          >
+        </div>
+
+        <div class="campo-funcion">
+          <label>Sala</label>
+          <input
+            type="text"
+            name="editarSala"
+            [(ngModel)]="funcionEditando.sala"
+            required
+          >
+        </div>
+
+        <div class="campo-funcion">
+          <label>Precio del boleto (COP)</label>
+          <input
+            type="number"
+            name="editarPrecio"
+            [(ngModel)]="funcionEditando.precio"
+            min="1"
+            required
+          >
+        </div>
+
+        <div class="campo-funcion">
+          <label>Cupos disponibles</label>
+          <input
+            type="number"
+            name="editarCuposDisponibles"
+            [(ngModel)]="funcionEditando.cuposDisponibles"
+            min="1"
+            required
+          >
+        </div>
+
+      </div>
+
+      <div class="acciones-formulario">
+
+        <button
+          type="submit"
+          class="boton-agregar-funcion"
+          [disabled]="actualizando"
+        >
+          {{ actualizando ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+
+        <button
+          type="button"
+          class="boton-cancelar-funcion"
+          (click)="funcionEditando = null"
+        >
+          Cancelar
+        </button>
+
+      </div>
+
+    </form>
+  </section>
+  }
+
+  <!-- MENSAJE Y LISTA DE FUNCIONES -->
+  @if (mensaje || error) {
+  <div
+    class="alerta-lista-funciones"
+    [class.alerta-exito]="mensaje"
+    [class.alerta-error]="error"
+    role="alert"
+  >
+    @if (mensaje) {
+    <span class="icono-alerta">✓</span>
+    <span>{{ mensaje }}</span>
+    }
+
+    @if (error) {
+    <span class="icono-alerta">!</span>
+    <span>{{ error }}</span>
+    }
+  </div>
+  }
+
+  <!-- LISTA DE FUNCIONES -->
+  <section class="seccion-lista-funciones">
+
+    <div class="titulo-seccion">
+      <h3>🎞️ Lista de funciones</h3>
+      <p>Consulta, edita o elimina las funciones registradas.</p>
+    </div>
+
+    @if (funciones.length > 0) {
+
+    <div class="tabla-contenedor-funciones">
+
+      <table class="tabla-funciones">
+
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Película</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Sala</th>
+          <th>Precio</th>
+          <th>Cupos disponibles</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        @for (funcion of funciones; track funcion.id) {
+
+        <tr>
+
+          <td>{{ funcion.id }}</td>
+
+          <td>
+            {{ obtenerTituloPelicula(funcion.peliculaId) }}
+          </td>
+
+          <td>{{ funcion.fecha }}</td>
+
+          <td>
+                  <span class="etiqueta-hora">
+                    {{ formatearHora(funcion.hora) }}
+                  </span>
+          </td>
+
+          <td>
+                  <span class="etiqueta-sala">
+                    {{ funcion.sala }}
+                  </span>
+          </td>
+
+          <td>
+            {{ formatearPrecio(funcion.precio) }}
+          </td>
+
+          <td>{{ funcion.cuposDisponibles }}</td>
+
+          <td>
+            <div class="acciones-tabla-funciones">
+
+              <button
+                type="button"
+                class="boton-editar-funcion"
+                (click)="editarFuncion(funcion)"
+              >
+                Editar
+              </button>
+
+              <button
+                type="button"
+                class="boton-eliminar-funcion"
+                [disabled]="eliminando"
+                (click)="eliminarFuncion(funcion.id!)"
+              >
+                Eliminar
+              </button>
+
+            </div>
+          </td>
+
+        </tr>
+        }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    } @else {
+
+    <div class="estado-vacio-funciones">
+      <span>🎥</span>
+      <h4>No hay funciones disponibles</h4>
+      <p>Agrega una nueva función para comenzar a programar las películas.</p>
+    </div>
+
+    }
+
+  </section>
+
+</div>

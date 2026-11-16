@@ -1,0 +1,283 @@
+
+<div class="contenedor-peliculas">
+
+  <!-- ENCABEZADO -->
+  <section class="tarjeta-pelicula encabezado-peliculas">
+    <div>
+      <h2>🎬 Películas</h2>
+      <p>Administra el catálogo de películas de CineVerse.</p>
+    </div>
+
+    <div class="contador-peliculas">
+      <span>{{ peliculas.length }}</span>
+      <small>Películas registradas</small>
+    </div>
+  </section>
+
+  <!-- FORMULARIO PARA AGREGAR -->
+  <section class="tarjeta-pelicula">
+    <div class="titulo-seccion">
+      <h3>Agregar nueva película</h3>
+      <p>Completa los datos para registrar una película.</p>
+    </div>
+
+    <form (ngSubmit)="crearPelicula()">
+      <div class="formulario-grid">
+
+        <div class="campo-pelicula">
+          <label>Título</label>
+          <input
+            type="text"
+            name="titulo"
+            [(ngModel)]="nuevaPelicula.titulo"
+            placeholder="Nombre de la película"
+            required>
+        </div>
+
+        <div class="campo-pelicula">
+          <label>Género</label>
+          <input
+            type="text"
+            name="genero"
+            [(ngModel)]="nuevaPelicula.genero"
+            placeholder="Ej. Acción, comedia, drama"
+            required>
+        </div>
+
+        <div class="campo-pelicula">
+          <label>Duración</label>
+          <div class="duracion-unida">
+            <input
+              type="number"
+              name="horas"
+              [(ngModel)]="horasNuevaPelicula"
+              min="0"
+              placeholder="HH"
+              required>
+
+            <span>:</span>
+
+            <input
+              type="number"
+              name="minutos"
+              [(ngModel)]="minutosNuevaPelicula"
+              min="0"
+              max="59"
+              placeholder="MM"
+              required>
+          </div>
+        </div>
+
+        <div class="campo-pelicula">
+          <label>Clasificación</label>
+          <select
+            name="clasificacion"
+            [(ngModel)]="nuevaPelicula.clasificacion"
+            required>
+            <option value="" disabled>Selecciona una clasificación</option>
+            <option value="TP">TP - Todo público</option>
+            <option value="7+">7+ - Mayores de 7 años</option>
+            <option value="12+">12+ - Mayores de 12 años</option>
+            <option value="15+">15+ - Mayores de 15 años</option>
+            <option value="18+">18+ - Mayores de 18 años</option>
+          </select>
+        </div>
+
+        <div class="campo-pelicula campo-completo">
+          <label>URL del tráiler</label>
+          <input
+            type="url"
+            name="trailerUrl"
+            [(ngModel)]="nuevaPelicula.trailerUrl"
+            placeholder="https://www.youtube.com/...">
+        </div>
+
+      </div>
+
+      <div class="acciones-formulario">
+        <button
+          type="submit"
+          class="boton-agregar"
+          [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : 'Agregar película' }}
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- FORMULARIO PARA EDITAR -->
+  @if (peliculaEditando) {
+  <section class="tarjeta-pelicula formulario-edicion">
+    <div class="titulo-seccion">
+      <h3>Editar película</h3>
+      <p>Modifica la información de la película seleccionada.</p>
+    </div>
+
+    <form (ngSubmit)="actualizarPelicula()">
+      <div class="formulario-grid">
+
+        <div class="campo-pelicula">
+          <label>Título</label>
+          <input
+            type="text"
+            name="editarTitulo"
+            [(ngModel)]="peliculaEditando.titulo"
+            required>
+        </div>
+
+        <div class="campo-pelicula">
+          <label>Género</label>
+          <input
+            type="text"
+            name="editarGenero"
+            [(ngModel)]="peliculaEditando.genero"
+            required>
+        </div>
+
+        <div class="campo-pelicula">
+          <label>Duración</label>
+          <div class="duracion-unida">
+            <input
+              type="number"
+              name="editarHoras"
+              [(ngModel)]="horasEdicion"
+              min="0"
+              placeholder="HH"
+              required>
+
+            <span>:</span>
+
+            <input
+              type="number"
+              name="editarMinutos"
+              [(ngModel)]="minutosEdicion"
+              min="0"
+              max="59"
+              placeholder="MM"
+              required>
+          </div>
+        </div>
+
+        <div class="campo-pelicula">
+          <label>Clasificación</label>
+          <select
+            name="editarClasificacion"
+            [(ngModel)]="peliculaEditando.clasificacion"
+            required>
+            <option value="" disabled>Selecciona una clasificación</option>
+            <option value="TP">TP - Todo público</option>
+            <option value="7+">7+ - Mayores de 7 años</option>
+            <option value="12+">12+ - Mayores de 12 años</option>
+            <option value="15+">15+ - Mayores de 15 años</option>
+            <option value="18+">18+ - Mayores de 18 años</option>
+          </select>
+        </div>
+
+        <div class="campo-pelicula campo-completo">
+          <label>URL del tráiler</label>
+          <input
+            type="url"
+            name="editarTrailerUrl"
+            [(ngModel)]="peliculaEditando.trailerUrl">
+        </div>
+
+      </div>
+
+      <div class="acciones-formulario">
+        <button
+          type="submit"
+          class="boton-agregar"
+          [disabled]="actualizando">
+          {{ actualizando ? 'Actualizando...' : 'Guardar cambios' }}
+        </button>
+
+        <button
+          type="button"
+          class="boton-cancelar"
+          (click)="peliculaEditando = null">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </section>
+  }
+
+  <!-- LISTADO DE PELÍCULAS -->
+  <section class="seccion-lista-peliculas">
+    <div class="titulo-seccion">
+      <h3>Películas registradas</h3>
+      <p>Consulta y administra las películas disponibles.</p>
+    </div>
+
+    @if (peliculas.length > 0) {
+    <div class="tabla-contenedor">
+      <table class="tabla-peliculas">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Género</th>
+          <th>Duración</th>
+          <th>Clasificación</th>
+          <th>Tráiler</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @for (pelicula of peliculas; track pelicula.id) {
+        <tr>
+          <td>{{ pelicula.id }}</td>
+          <td class="nombre-pelicula">{{ pelicula.titulo }}</td>
+          <td>{{ pelicula.genero }}</td>
+          <td>{{ formatearDuracion(pelicula.duracion) }}</td>
+          <td>
+                  <span class="etiqueta-clasificacion">
+                    {{ pelicula.clasificacion }}
+                  </span>
+          </td>
+          <td>
+            @if (pelicula.trailerUrl) {
+            <a
+              [href]="pelicula.trailerUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="enlace-trailer">
+              Ver tráiler
+            </a>
+            } @else {
+            <span class="sin-trailer">No disponible</span>
+            }
+          </td>
+          <td>
+            <div class="acciones-tabla">
+              <button
+                type="button"
+                class="boton-editar"
+                (click)="editarPelicula(pelicula)">
+                Editar
+              </button>
+
+              <button
+                type="button"
+                class="boton-eliminar"
+                (click)="eliminarPelicula(pelicula.id)">
+                Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+    } @else {
+    <div class="estado-vacio">
+      <span>🎬</span>
+      <h4>No hay películas registradas</h4>
+      <p>Agrega una película para que aparezca en este listado.</p>
+    </div>
+    }
+  </section>
+
+</div>

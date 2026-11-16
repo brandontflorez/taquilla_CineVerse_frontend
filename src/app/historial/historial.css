@@ -1,0 +1,194 @@
+
+/* CONTENEDOR GENERAL */
+.contenedor-historial {
+  width: 100%;
+  padding: 25px;
+  box-sizing: border-box;
+  color: #f9fafb;
+}
+
+/* CUADRO PRINCIPAL */
+.tarjeta-historial {
+  width: 100%;
+  box-sizing: border-box;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* TÍTULO PRINCIPAL */
+.tarjeta-historial h2 {
+  color: #93c5fd;
+  font-size: 28px;
+  margin: 0 0 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #475569;
+}
+
+/* RESUMEN DE VENTAS */
+.resumen {
+  background: #334155;
+  border: 1px solid #64748b;
+  border-left: 5px solid #1e3a8a;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.resumen h3 {
+  color: #bfdbfe;
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+.resumen p {
+  color: #f3f4f6;
+  font-size: 15px;
+  margin: 12px 0;
+}
+
+.resumen strong {
+  color: #93c5fd;
+}
+
+/* TABLA DE HISTORIAL */
+.tabla-historial {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #475569;
+  border-radius: 12px;
+}
+
+.tabla-historial table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1e293b;
+}
+
+/* ENCABEZADOS */
+.tabla-historial th {
+  background: #1e3a8a;
+  color: #ffffff;
+  padding: 15px;
+  text-align: left;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* FILAS */
+.tabla-historial td {
+  padding: 14px 15px;
+  color: #f3f4f6;
+  border-bottom: 1px solid #475569;
+  font-size: 14px;
+}
+
+/* FILAS ALTERNAS */
+.tabla-historial tbody tr:nth-child(even) {
+  background: #334155;
+}
+
+.tabla-historial tbody tr:nth-child(odd) {
+  background: #1e293b;
+}
+
+/* EFECTO AL PASAR EL CURSOR */
+.tabla-historial tbody tr:hover {
+  background: #475569;
+}
+
+/* MENSAJES */
+.tarjeta-historial > p {
+  color: #d1d5db;
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+/* MENSAJE DE ERROR */
+.mensaje-error {
+  background: #450a0a;
+  color: #fecaca;
+  border: 1px solid #991b1b;
+  border-radius: 8px;
+  padding: 13px;
+  margin: 15px 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .contenedor-historial {
+    padding: 12px;
+  }
+
+  .tarjeta-historial {
+    padding: 18px;
+  }
+
+  .tarjeta-historial h2 {
+    font-size: 23px;
+  }
+
+  .tabla-historial th,
+  .tabla-historial td {
+    padding: 10px;
+    font-size: 12px;
+  }
+}
+
+
+/* Encabezado del historial */
+.encabezado-historial {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* Botón vaciar historial */
+.btn-vaciar {
+  background: #991b1b;
+  color: white;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-vaciar:hover {
+  background: #b91c1c;
+}
+
+/* Botón eliminar compra */
+.btn-eliminar {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-eliminar:hover {
+  background: #991b1b;
+}
+
+/* Mensajes */
+.mensaje-exito {
+  color: #86efac;
+  background: #14532d;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.mensaje-error {
+  color: #fecaca;
+  background: #7f1d1d;
+  padding: 12px;
+  border-radius: 8px;
+}

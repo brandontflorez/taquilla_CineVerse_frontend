@@ -1,0 +1,112 @@
+
+<div class="contenedor-historial">
+
+  <div class="tarjeta-historial">
+
+    <div class="encabezado-historial">
+      <h2>📋 Historial de compras</h2>
+
+      @if (compras.length > 0 && !cargando) {
+      <button
+        class="btn-vaciar"
+        (click)="eliminarTodasLasCompras()">
+        🗑️ Vaciar historial
+      </button>
+      }
+    </div>
+
+    @if (!cargando && compras.length > 0) {
+    <div class="resumen">
+      <h3>Resumen de ventas</h3>
+
+      <p>
+        <strong>Total de compras:</strong>
+        {{ compras.length }}
+      </p>
+
+      <p>
+        <strong>Total vendido:</strong>
+        {{ formatearPrecio(calcularTotalVentas()) }}
+      </p>
+    </div>
+    }
+
+    @if (cargando) {
+    <p>Cargando historial...</p>
+    }
+
+    @if (error) {
+    <p class="mensaje-error">{{ error }}</p>
+    }
+
+    @if (mensaje) {
+    <p class="mensaje-exito">{{ mensaje }}</p>
+    }
+
+    @if (!cargando) {
+
+    @if (compras.length > 0) {
+
+    <div class="tabla-historial">
+
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Película</th>
+          <th>Función</th>
+          <th>Boletos</th>
+          <th>Valor total</th>
+          <th>Fecha de compra</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @for (compra of compras; track compra.id) {
+        <tr>
+          <td>{{ compra.id }}</td>
+
+          <td>{{ compra.nombreCliente }}</td>
+
+          <td>{{ obtenerPelicula(compra) }}</td>
+
+          <td>
+            @if (obtenerFuncion(compra.funcionId); as funcion) {
+            {{ funcion.fecha }} - {{ funcion.hora }} - Sala {{ funcion.sala }}
+            } @else {
+            Función no encontrada
+            }
+          </td>
+
+          <td>{{ compra.cantidadBoletos }}</td>
+
+          <td>{{ formatearPrecio(compra.valorTotal ?? 0) }}</td>
+
+          <td>{{ compra.fechaCompra }}</td>
+
+          <td>
+            <button
+              class="btn-eliminar"
+              (click)="eliminarCompra(compra)">
+              🗑️ Eliminar
+            </button>
+          </td>
+        </tr>
+        }
+        </tbody>
+
+      </table>
+
+    </div>
+
+    } @else {
+    <p>No hay compras registradas todavía.</p>
+    }
+
+    }
+
+  </div>
+
+</div>

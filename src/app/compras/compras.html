@@ -1,0 +1,575 @@
+
+<div class="contenedor-compras">
+  <div class="tarjeta-compras">
+
+    <!-- ENCABEZADO -->
+    <div class="encabezado-compras">
+      <h2>🎬 Comprar Boletos</h2>
+      <p class="subtitulo">
+        Selecciona tu película, función y método de pago.
+      </p>
+    </div>
+
+    <!-- FORMULARIO Y RESUMEN -->
+    <div class="contenido-principal">
+
+      <!-- FORMULARIO DE COMPRA -->
+      <div class="formulario-compra">
+
+        <h3>🎟️ Datos de la compra</h3>
+
+        <form (ngSubmit)="realizarCompra()">
+
+          <!-- NOMBRE DEL CLIENTE -->
+          <label for="nombreCliente">Nombre del cliente</label>
+
+          <input
+            type="text"
+            id="nombreCliente"
+            name="nombreCliente"
+            [(ngModel)]="nuevaCompra.nombreCliente"
+            placeholder="Ingresa el nombre del comprador"
+            required
+          />
+
+          <!-- SELECCIONAR FUNCIÓN -->
+          <label for="funcion">Seleccionar función</label>
+
+          <select
+            id="funcion"
+            name="funcionId"
+            [(ngModel)]="nuevaCompra.funcionId"
+            required
+          >
+            <option [ngValue]="0">Selecciona una función</option>
+
+            @for (funcion of funciones; track funcion.id) {
+            <option [ngValue]="funcion.id">
+              {{ obtenerTitulo(funcion.peliculaId) }}
+            </option>
+            }
+          </select>
+
+          <!-- CANTIDAD DE BOLETOS -->
+          <label for="cantidadBoletos">Cantidad de boletos</label>
+
+          <input
+            type="number"
+            id="cantidadBoletos"
+            name="cantidadBoletos"
+            [(ngModel)]="nuevaCompra.cantidadBoletos"
+            min="1"
+            required
+          />
+
+          <!-- MÉTODOS DE PAGO -->
+          <h3>💳 Método de pago</h3>
+
+          <div class="metodos-pago">
+
+            @for (metodo of metodosPago; track metodo.valor) {
+            <button
+              type="button"
+              class="metodo-pago"
+              [class.seleccionado]="nuevaCompra.metodoPago === metodo.valor"
+              (click)="seleccionarMetodoPago(metodo.valor)"
+            >
+              {{ metodo.nombre }}
+            </button>
+            }
+
+          </div>
+
+          <!-- PAGO CON TARJETA -->
+          @if (nuevaCompra.metodoPago === 'TARJETA') {
+          <div class="datos-pago">
+
+            <h4>💳 Pago con tarjeta</h4>
+
+            <label for="codigoTarjeta">Número de tarjeta</label>
+
+            <input
+              type="text"
+              id="codigoTarjeta"
+              name="codigoTarjeta"
+              [(ngModel)]="nuevaCompra.codigoPago"
+              placeholder="Ingresa el número de tarjeta"
+              required
+            />
+
+          </div>
+          }
+
+          <!-- PAGO VIRTUAL -->
+          @if (nuevaCompra.metodoPago === 'VIRTUAL') {
+          <div class="datos-pago">
+
+            <h4>📱 Pago virtual</h4>
+
+            <label for="codigoVirtual">Código de pago</label>
+
+            <input
+              type="text"
+              id="codigoVirtual"
+              name="codigoVirtual"
+              [(ngModel)]="nuevaCompra.codigoPago"
+              placeholder="Ingresa el código de pago"
+              required
+            />
+
+          </div>
+          }
+
+          <!-- CÓDIGO DE PAGO -->
+          @if (nuevaCompra.metodoPago === 'CODIGO') {
+          <div class="datos-pago">
+
+            <h4>🔢 Código de pago</h4>
+
+            <label for="codigoPago">Código</label>
+
+            <input
+              type="text"
+              id="codigoPago"
+              name="codigoPago"
+              [(ngModel)]="nuevaCompra.codigoPago"
+              placeholder="Ingresa tu código"
+              required
+            />
+
+          </div>
+          }
+
+          <!-- =====================================
+               CINEVERSE CARD
+          ====================================== -->
+
+          @if (nuevaCompra.metodoPago === 'CINEVERSE_CARD') {
+
+          <div class="cineverse-card">
+
+            <h4>🎬 CineVerse Card</h4>
+
+            <p class="descripcion-card">
+              Realiza tu compra utilizando el saldo de tu tarjeta CineVerse.
+            </p>
+
+            <!-- NÚMERO DE TARJETA -->
+            <label for="codigoCineverse">
+              Número de tarjeta CineVerse
+            </label>
+
+            <input
+              type="text"
+              id="codigoCineverse"
+              name="codigoCineverse"
+              [(ngModel)]="nuevaCompra.codigoPago"
+              placeholder="Ejemplo: CV-123456"
+              required
+            />
+
+            <!-- BOTÓN CONSULTAR -->
+            <button
+              type="button"
+              class="btn-consultar-tarjeta"
+              (click)="consultarTarjeta()"
+              [disabled]="consultandoTarjeta"
+            >
+                <span>
+                  {{ consultandoTarjeta
+                    ? 'Consultando tarjeta...'
+                    : '🔍 Consultar tarjeta' }}
+                </span>
+            </button>
+
+            <!-- ERROR DE CONSULTA -->
+            @if (errorTarjeta) {
+            <p class="error-recarga">
+              {{ errorTarjeta }}
+            </p>
+            }
+
+            <!-- CONSULTANDO -->
+            @if (consultandoTarjeta) {
+            <p class="mensaje-consulta">
+              Consultando información de la tarjeta...
+            </p>
+            }
+
+            <!-- INFORMACIÓN DE LA TARJETA -->
+            @if (tarjetaCineVerse) {
+
+            <div class="informacion-cineverse">
+
+              <div class="titulo-informacion-card">
+                <span>💳</span>
+                <h5>Información de tu tarjeta</h5>
+              </div>
+
+              <!-- TITULAR -->
+              <div class="dato-tarjeta">
+                <span>Titular</span>
+
+                <strong>
+                  {{ tarjetaCineVerse.nombreTitular }}
+                </strong>
+              </div>
+
+              <!-- NÚMERO -->
+              <div class="dato-tarjeta">
+                <span>Número de tarjeta</span>
+
+                <strong>
+                  {{ tarjetaCineVerse.numeroTarjeta }}
+                </strong>
+              </div>
+
+              <!-- SALDO DISPONIBLE -->
+              <div class="saldo-tarjeta">
+                <span>Saldo disponible</span>
+
+                <strong>
+                  {{ (tarjetaCineVerse.saldo ?? 0) | currency:'COP':'symbol':'1.0-0' }}
+                </strong>
+              </div>
+
+              <!-- AGREGAR SALDO -->
+              <div class="seccion-recarga">
+
+                <h5>➕ Agregar saldo</h5>
+
+                <p>
+                  Escribe el valor que deseas agregar a tu tarjeta.
+                </p>
+
+                <label for="valorRecarga">
+                  Valor de la recarga
+                </label>
+
+                <!-- CAMPO MONETARIO -->
+                <div class="campo-monetario">
+
+                  <span>$</span>
+
+                  <input
+                    type="text"
+                    id="valorRecarga"
+                    name="valorRecarga"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    [ngModel]="valorRecargaTexto"
+                    (ngModelChange)="actualizarValorRecarga($event)"
+                    placeholder="Ejemplo: 50.000"
+                  />
+
+                  <span class="moneda">COP</span>
+
+                </div>
+
+                <!-- BOTÓN AGREGAR SALDO -->
+                <button
+                  type="button"
+                  class="btn-recargar"
+                  (click)="recargarSaldo()"
+                  [disabled]="recargando"
+                >
+                  {{ recargando ? 'Agregando saldo...' : '➕ Agregar saldo' }}
+                </button>
+
+                <!-- MENSAJE DE ÉXITO -->
+                @if (mensajeRecarga) {
+                <p class="mensaje-recarga">
+                  {{ mensajeRecarga }}
+                </p>
+                }
+
+                <!-- ERROR DE RECARGA -->
+                @if (errorRecarga) {
+                <p class="error-recarga">
+                  {{ errorRecarga }}
+                </p>
+                }
+
+              </div>
+
+            </div>
+            }
+
+          </div>
+          }
+
+          <!-- MENSAJE DE ÉXITO DE COMPRA -->
+          @if (mensaje) {
+          <div class="mensaje-exito">
+            {{ mensaje }}
+          </div>
+          }
+
+          <!-- ERROR DE COMPRA -->
+          @if (error) {
+          <div class="mensaje-error">
+            {{ error }}
+          </div>
+          }
+
+          <!-- CONFIRMAR COMPRA -->
+          <button
+            type="submit"
+            class="boton-comprar"
+            [disabled]="guardando"
+          >
+            {{ guardando
+            ? 'Procesando compra...'
+            : '🎟️ Confirmar compra' }}
+          </button>
+
+        </form>
+
+      </div>
+
+      <!-- =====================================
+           RESUMEN DE COMPRA
+      ====================================== -->
+
+      <div class="resumen-compra">
+
+        <h3>🧾 Resumen de compra</h3>
+
+        @if (obtenerFuncion(nuevaCompra.funcionId); as funcionResumen) {
+
+        <p>
+          <strong>Cliente:</strong>
+          <span>
+              {{ nuevaCompra.nombreCliente || 'No especificado' }}
+            </span>
+        </p>
+
+        <p>
+          <strong>Película:</strong>
+          <span>
+              {{ obtenerTitulo(funcionResumen.peliculaId) }}
+            </span>
+        </p>
+
+        <p>
+          <strong>Fecha:</strong>
+          <span>{{ funcionResumen.fecha }}</span>
+        </p>
+
+        <p>
+          <strong>Hora:</strong>
+          <span>{{ formatearHora(funcionResumen.hora) }}</span>
+        </p>
+
+        <p>
+          <strong>Sala:</strong>
+          <span>{{ funcionResumen.sala }}</span>
+        </p>
+
+        <p>
+          <strong>Precio por boleto:</strong>
+          <span>
+              {{ funcionResumen.precio |
+                currency:'COP':'symbol-narrow':'1.0-0' }}
+            </span>
+        </p>
+
+        <p>
+          <strong>Cantidad:</strong>
+          <span>{{ nuevaCompra.cantidadBoletos }}</span>
+        </p>
+
+        <div class="total">
+          <span>Total:</span>
+
+          <strong>
+            {{ calcularTotal() |
+            currency:'COP':'symbol-narrow':'1.0-0' }}
+          </strong>
+        </div>
+
+        } @else {
+
+        <p>
+          Selecciona una función para ver el resumen de tu compra.
+        </p>
+
+        }
+
+      </div>
+
+    </div>
+
+    <!-- =====================================
+         COMPROBANTE
+    ====================================== -->
+
+    @if (comprobante; as recibo) {
+
+    <div class="comprobante">
+
+      <div class="comprobante-header">
+        <h2>🎬 CineVerse</h2>
+        <h3>Comprobante de compra</h3>
+        <p>Gracias por elegirnos</p>
+      </div>
+
+      <div class="comprobante-codigo">
+        <strong>Código de comprobante</strong>
+        <span>{{ recibo.codigoComprobante }}</span>
+      </div>
+
+      <div class="comprobante-detalles">
+
+        <p>
+          <strong>Número de compra:</strong>
+          <span>{{ recibo.compraId }}</span>
+        </p>
+
+        <p>
+          <strong>Cliente:</strong>
+          <span>{{ recibo.nombreCliente }}</span>
+        </p>
+
+        <p>
+          <strong>Película:</strong>
+          <span>{{ recibo.pelicula }}</span>
+        </p>
+
+        <p>
+          <strong>Fecha de función:</strong>
+          <span>{{ recibo.fechaFuncion }}</span>
+        </p>
+
+        <p>
+          <strong>Hora:</strong>
+          <span>{{ formatearHora(recibo.horaFuncion) }}</span>
+        </p>
+
+        <p>
+          <strong>Sala:</strong>
+          <span>{{ recibo.sala }}</span>
+        </p>
+
+        <p>
+          <strong>Cantidad de boletos:</strong>
+          <span>{{ recibo.cantidadBoletos }}</span>
+        </p>
+
+        <p>
+          <strong>Método de pago:</strong>
+          <span>{{ recibo.metodoPago }}</span>
+        </p>
+
+        <p>
+          <strong>Fecha de compra:</strong>
+          <span>{{ formatearFecha(recibo.fechaCompra) }}</span>
+        </p>
+
+        <div class="comprobante-total">
+          <strong>Total pagado:</strong>
+
+          <strong>
+            {{ recibo.valorTotal |
+            currency:'COP':'symbol-narrow':'1.0-0' }}
+          </strong>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="boton-imprimir"
+        (click)="imprimirComprobante()"
+      >
+        🖨️ Imprimir comprobante
+      </button>
+
+    </div>
+
+    }
+
+    <!-- =====================================
+         HISTORIAL DE COMPRAS
+    ====================================== -->
+
+    <div class="tabla-compras">
+
+      <h3>📜 Historial de Compras</h3>
+
+      <div class="tabla-contenedor">
+
+        <table>
+
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Película</th>
+            <th>Función</th>
+            <th>Boletos</th>
+            <th>Método de pago</th>
+            <th>Total</th>
+            <th>Fecha de compra</th>
+          </tr>
+          </thead>
+
+          <tbody>
+
+          @for (compra of compras; track compra.id) {
+
+          <tr>
+
+            <td>{{ compra.id }}</td>
+
+            <td>{{ compra.nombreCliente }}</td>
+
+            <td>
+              @if (obtenerFuncion(compra.funcionId); as funcionCompra) {
+              {{ obtenerTitulo(funcionCompra.peliculaId) }}
+              } @else {
+              No disponible
+              }
+            </td>
+
+            <td>{{ compra.funcionId }}</td>
+
+            <td>{{ compra.cantidadBoletos }}</td>
+
+            <td>
+              {{ compra.metodoPago || 'No disponible' }}
+            </td>
+
+            <td>
+              {{ compra.valorTotal |
+              currency:'COP':'symbol-narrow':'1.0-0' }}
+            </td>
+
+            <td>
+              {{ compra.fechaCompra
+              ? formatearFecha(compra.fechaCompra)
+              : 'No disponible' }}
+            </td>
+
+          </tr>
+
+          } @empty {
+
+          <tr>
+            <td colspan="8" class="sin-compras">
+              No hay compras registradas.
+            </td>
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

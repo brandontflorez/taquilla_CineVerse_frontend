@@ -1,0 +1,441 @@
+
+/* CONTENEDOR PRINCIPAL */
+.contenedor-funciones {
+  width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 25px;
+  color: #e2e8f0;
+}
+
+/* ENCABEZADO */
+.encabezado-funciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.encabezado-funciones h2 {
+  color: #2dd4bf;
+  font-size: 28px;
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.encabezado-funciones p {
+  color: #a5c7d2;
+  font-size: 15px;
+  margin: 0;
+}
+
+/* TARJETAS */
+.tarjeta-funciones {
+  background: #102a36;
+  border: 1px solid #245263;
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* CONTADOR */
+.contador-funciones {
+  background: #123c48;
+  border: 1px solid #0d9488;
+  border-radius: 12px;
+  padding: 12px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.contador-funciones span {
+  color: #5eead4;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.contador-funciones small {
+  color: #99f6e4;
+}
+
+/* TÍTULOS */
+.titulo-seccion {
+  margin-bottom: 22px;
+}
+
+.titulo-seccion h3 {
+  color: #f0fdfa;
+  font-size: 20px;
+  margin: 0 0 7px;
+}
+
+.titulo-seccion p {
+  color: #94b8c4;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* FORMULARIO */
+.formulario-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.campo-funcion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.campo-funcion label {
+  color: #c5e4e8;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* INPUTS Y SELECTS */
+.campo-funcion input,
+.campo-funcion select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: 9px;
+  border: 1px solid #356477;
+  background: #173b49;
+  color: #f0fdfa;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.campo-funcion input:focus,
+.campo-funcion select:focus {
+  border-color: #2dd4bf;
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.15);
+}
+
+.campo-funcion input::placeholder {
+  color: #789eaa;
+}
+
+.campo-funcion select {
+  cursor: pointer;
+}
+
+.campo-funcion select option {
+  background: #173b49;
+  color: #ffffff;
+}
+
+/* ICONO Y COLOR DEL CAMPO HORA */
+.campo-funcion input[type="time"] {
+  color-scheme: dark;
+}
+
+/* ACCIONES DEL FORMULARIO */
+.acciones-formulario {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+/* BOTÓN AGREGAR Y GUARDAR */
+.boton-agregar-funcion {
+  background: #0d9488;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.boton-agregar-funcion:hover {
+  background: #0f766e;
+}
+
+.boton-agregar-funcion:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* BOTÓN CANCELAR */
+.boton-cancelar-funcion {
+  background: #475569;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.boton-cancelar-funcion:hover {
+  background: #64748b;
+}
+
+/* FORMULARIO DE EDICIÓN */
+.formulario-edicion-funcion {
+  border-color: #0d9488;
+}
+
+/* MENSAJES */
+.mensaje-exito,
+.mensaje-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mensaje-exito {
+  background: #123d36;
+  border: 1px solid #0d9488;
+  color: #99f6e4;
+}
+
+.mensaje-error {
+  background: #451f29;
+  border: 1px solid #be123c;
+  color: #fecdd3;
+}
+
+.mensaje-exito span,
+.mensaje-error span {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* LISTADO */
+.seccion-lista-funciones {
+  background: #102a36;
+  border: 1px solid #245263;
+  border-radius: 16px;
+  padding: 25px;
+  margin-top: 28px;
+}
+
+/* TABLA */
+.tabla-contenedor-funciones {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 10px;
+}
+
+.tabla-funciones {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: collapse;
+  background: #102a36;
+}
+
+.tabla-funciones th {
+  background: #164452;
+  color: #5eead4;
+  padding: 15px 12px;
+  text-align: left;
+  font-size: 13px;
+  white-space: nowrap;
+  border-bottom: 2px solid #0d9488;
+}
+
+.tabla-funciones td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #245263;
+  color: #c5e4e8;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.tabla-funciones tbody tr {
+  transition: background 0.2s;
+}
+
+.tabla-funciones tbody tr:hover {
+  background: #173b49;
+}
+
+/* NOMBRE DE PELÍCULA */
+.nombre-pelicula-funcion {
+  color: #ffffff !important;
+  font-weight: 600;
+  min-width: 180px;
+}
+
+/* ETIQUETA DE HORA */
+.etiqueta-hora {
+  display: inline-block;
+  background: #164e63;
+  color: #67e8f9;
+  padding: 6px 10px;
+  border-radius: 7px;
+  font-weight: 600;
+}
+
+/* ETIQUETA DE SALA */
+.etiqueta-sala {
+  display: inline-block;
+  background: #134e4a;
+  color: #99f6e4;
+  padding: 6px 10px;
+  border-radius: 7px;
+  font-weight: 600;
+}
+
+/* PRECIO */
+.precio-funcion {
+  color: #5eead4 !important;
+  font-weight: 700;
+}
+
+/* BOTONES DE LA TABLA */
+.acciones-tabla-funciones {
+  display: flex;
+  gap: 8px;
+}
+
+.boton-editar-funcion,
+.boton-eliminar-funcion {
+  border: none;
+  border-radius: 7px;
+  padding: 8px 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.boton-editar-funcion {
+  background: #0e7490;
+  color: #ffffff;
+}
+
+.boton-editar-funcion:hover {
+  background: #0891b2;
+}
+
+.boton-eliminar-funcion {
+  background: #9f1239;
+  color: #ffffff;
+}
+
+.boton-eliminar-funcion:hover {
+  background: #be123c;
+}
+
+.boton-eliminar-funcion:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ESTADO VACÍO */
+.estado-vacio-funciones {
+  text-align: center;
+  padding: 45px 15px;
+  color: #94b8c4;
+}
+
+.estado-vacio-funciones span {
+  font-size: 42px;
+}
+
+.estado-vacio-funciones h4 {
+  color: #f0fdfa;
+  margin-bottom: 8px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .contenedor-funciones {
+    padding: 15px;
+  }
+
+  .encabezado-funciones {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .formulario-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjeta-funciones,
+  .seccion-lista-funciones {
+    padding: 18px;
+  }
+
+  .acciones-formulario {
+    flex-wrap: wrap;
+  }
+}
+
+
+/* =========================================
+   ALERTAS VISIBLES EN LA LISTA
+========================================= */
+
+.alerta-lista-funciones {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 17px 20px;
+  margin-bottom: 22px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  animation: aparecerAlerta 0.3s ease;
+}
+
+.alerta-lista-funciones .icono-alerta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.alerta-lista-funciones.alerta-error {
+  background: #5b202c;
+  border: 1px solid #fb7185;
+  color: #ffe4e6;
+}
+
+.alerta-lista-funciones.alerta-error .icono-alerta {
+  background: #be123c;
+  color: #ffffff;
+}
+
+.alerta-lista-funciones.alerta-exito {
+  background: #123d36;
+  border: 1px solid #2dd4bf;
+  color: #ccfbf1;
+}
+
+.alerta-lista-funciones.alerta-exito .icono-alerta {
+  background: #0d9488;
+  color: #ffffff;
+}
+
+@keyframes aparecerAlerta {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
